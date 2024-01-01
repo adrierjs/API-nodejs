@@ -1,39 +1,53 @@
 export const getAllUsers = (req, res) => {
   try {
-    res.send('Listagem de usuários');
-    res.send('Adrier teste')
+    res.send("Listagem de usuários");
   } catch (error) {
-    console.log('Error:', error);
-    res.status(500).send('Internal Server Error');
+    console.log("Error:", error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
 export const createUser = (req, res) => {
   try {
-    const { nome, idade, cidade, telefone } = req.body;
+    const users = req.body;
 
-    if (!req.body || !nome || !idade) {
-      res.status(400).send('Formato inválido')
-      return 'Formato inválido';
+    if (
+      !Array.isArray(users) ||
+      users.length === 0 ||
+      !users.every((user) => user.name) //Verfica se existe o atributo name para cada usuário
+    ) {
+      res.status(400).send("Formato inválido!");
+      return "Formato inválido";
     }
-    if (nome && idade) {
-      console.log(`Dados recebidos de ${nome}`)
-      if (nome && idade && cidade && !telefone) {
-        res.send(`${nome} tem ${idade} anos e mora em ${cidade}`)
-        return;
+
+    const greetings = [];
+
+    users.forEach((user) => {
+      if (
+        !user.shipping_address ||
+        user.shipping_address.length === 0 ||
+        !Array.isArray(user.shipping_address)
+      ) {
+        greetings.push(
+          `Olá, ${user.name}. Não encontrei informações referente ao seu endereço.`
+        );
       }
-      if (nome && idade && cidade && telefone){
-        res.send(`Nome: ${nome}
-        Idade: ${idade} anos
-        Cidade: ${cidade}
-        Telefone: ${telefone}`)
-        return;
+
+      if (
+        user.shipping_address &&
+        user.shipping_address.length !== 0 &&
+        Array.isArray(user.shipping_address)
+      ) {
+        greetings.push(
+          `Olá, ${user.name}! Você mora na ${user.shipping_address[0].street}, no bairro ${user.shipping_address[0].neighborhood} em ${user.shipping_address[0].city} - ${user.shipping_address[0].region}.`
+        );
+        console.log(`Dados recebidos com sucesso de ${user.name}`);
       }
-      res.send(`${nome} tem ${idade} anos`);
-    }
+    });
+
+    res.status(200).send(greetings.join("\n"));
   } catch (error) {
     console.log(`Error ${error}`);
-    res.status(500).send('Internal Server Error');
+    res.status(500).send("Internal Server Error");
   }
 };
-

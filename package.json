@@ -1,5 +1,5 @@
 {
-  "name": "API-NodeJS",
+  "name": "api-nodejs",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -14,5 +14,14 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adrierjs/API-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adrierjs/API-nodejs/issues"
+  },
+  "homepage": "https://github.com/adrierjs/API-nodejs#readme",
+  "description": ""
 }
